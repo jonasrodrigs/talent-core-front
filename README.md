@@ -1,3 +1,20 @@
+---
+
+## Author & Usage Notice
+
+<img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/1cc95363-7839-4d4a-85ed-b0a0a16a77f4" />
+
+
+**Jonas Mexilem Rodrigues da Silva**
+
+This project is publicly available **for technical evaluation and portfolio purposes only**.
+
+Unauthorized copying, reuse, redistribution, or modification of this project,
+either in whole or in part, is not permitted without explicit written permission
+from the author.
+
+See the LICENSE file for more details.
+
 # TalentCore Frontend
 ## design minimalista para viabilizar o desenvolvimento
 <img width="1919" height="831" alt="image" src="https://github.com/user-attachments/assets/a42058ff-5523-4969-94b6-9093792bd928" />
