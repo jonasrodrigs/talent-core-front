@@ -1,0 +1,336 @@
+<!-- src/app/features/talents/pages/talent-detail/talent-detail.component.html -->
+<section class="talent-detail">
+
+  <!-- Cabeçalho / Perfil (FOTO opcional ou AVATAR de iniciais) -->
+  <header class="detail-header">
+    <div class="profile">
+      <!-- Foto -->
+      <div class="photo" *ngIf="hasPhoto(); else noPhoto">
+        <img
+          [src]="cand()?.fotoUrl || ''"
+          [alt]="(cand()?.nomeCompleto || 'Foto do candidato')"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        />
+      </div>
+
+      <!-- Avatar com iniciais (fallback) -->
+      <ng-template #noPhoto>
+        <div class="avatar" [attr.aria-label]="'Avatar de ' + (cand()?.nomeCompleto || '')">
+          {{ avatarInitials() }}
+        </div>
+      </ng-template>
+
+      <!-- Títulos (Nome + Ocupação) -->
+      <div class="titles">
+        <h1 class="name" *ngIf="cand(); else loadingName">
+          {{ cand()?.nomeCompleto }}
+        </h1>
+        <ng-template #loadingName>
+          <h1 class="name">Carregando…</h1>
+        </ng-template>
+
+        <!-- Subtítulo (ocupação resumida sob o nome) -->
+        <p class="subtitle">
+          {{ (cand()?.ocupacao || '—') }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Ações -->
+    <nav class="actions">
+      <a class="btn" routerLink="/app/talents" aria-label="Voltar para Talentos">← Voltar</a>
+      <!-- Futuras ações:
+      <button class="btn" type="button">Editar</button>
+      <button class="btn danger" type="button">Excluir</button>
+      -->
+    </nav>
+  </header>
+
+  <!-- Estados globais -->
+  <div class="state" *ngIf="loading()">
+    <div class="spinner" aria-hidden="true"></div>
+    <span>Carregando…</span>
+  </div>
+
+  <div class="state error" *ngIf="!loading() && error()">
+    <strong>Falha ao carregar:</strong> {{ error() }}
+  </div>
+
+  <!-- Conteúdo -->
+  <ng-container *ngIf="!loading() && !error() && cand()">
+
+    <!-- =========================
+         RESUMO PROFISSIONAL
+         ========================= -->
+    <section class="cards">
+      <article class="card" *ngIf="hasResumo(); else resumoVazio">
+        <header>Resumo</header>
+        <!-- Mantém quebras de linha do texto -->
+        <p class="resume-text">
+          {{ cand()?.resumoProfissional }}
+        </p>
+      </article>
+      <ng-template #resumoVazio>
+        <article class="card">
+          <header>Resumo</header>
+          <p class="muted small">Sem resumo informado.</p>
+        </article>
+      </ng-template>
+    </section>
+
+    <!-- =========================
+         DEMAIS SEÇÕES (grid)
+         ========================= -->
+    <section class="cards">
+
+      <!-- Links (LinkedIn / GitHub / Portfólio) -->
+      <article class="card">
+        <header>Links</header>
+
+        <ng-container *ngIf="$any(cand())?.linkedin || $any(cand())?.github || $any(cand())?.portfolio; else noLinks">
+          <div class="chips">
+            <a
+              *ngIf="$any(cand())?.linkedin"
+              class="chip link-chip"
+              [href]="$any(cand())?.linkedin"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Abrir LinkedIn"
+              aria-label="LinkedIn">
+              LinkedIn
+            </a>
+
+            <a
+              *ngIf="$any(cand())?.github"
+              class="chip link-chip"
+              [href]="$any(cand())?.github"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Abrir GitHub"
+              aria-label="GitHub">
+              GitHub
+            </a>
+
+            <a
+              *ngIf="$any(cand())?.portfolio"
+              class="chip link-chip"
+              [href]="$any(cand())?.portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Abrir Portfólio/Site"
+              aria-label="Portfólio">
+              Portfólio
+            </a>
+          </div>
+        </ng-container>
+
+        <ng-template #noLinks>
+          <p class="muted small">Sem links informados.</p>
+        </ng-template>
+      </article>
+
+      <!-- Contato -->
+      <article class="card">
+        <header>Contato</header>
+        <div class="row">
+          <span class="label">E-mail</span>
+          <span class="value email" [title]="cand()?.email || '—'">{{ cand()?.email || '—' }}</span>
+        </div>
+        <div class="row">
+          <span class="label">Telefone</span>
+          <span class="value">{{ cand()?.telefone || '—' }}</span>
+        </div>
+      </article>
+
+      <!-- Localização / Endereço (um único campo com Bairro · Cidade/UF) -->
+      <article class="card">
+        <header>Localização</header>
+
+        <!-- Endereço curto em uma linha, formatado com Angular | titlecase -->
+        <div class="row">
+          <span class="label">Endereço</span>
+          <span class="value">
+            {{ enderecoCurto() | titlecase }}
+          </span>
+        </div>
+
+        <div class="row">
+          <span class="label">País</span>
+          <span class="value">{{ cand()?.pais ? (cand()?.pais | titlecase) : '—' }}</span>
+        </div>
+      </article>
+
+      <!-- Ocupação (CARD SOMENTE SE TIVER VALOR) -->
+      <article class="card" *ngIf="cand()?.ocupacao">
+        <header>Ocupação</header>
+        <div class="row">
+          <span class="label">Atual</span>
+          <span class="value">{{ cand()?.ocupacao }}</span>
+        </div>
+      </article>
+
+      <!-- Idiomas (chips) -->
+      <article class="card">
+        <header>Idiomas</header>
+        <div class="chips" *ngIf="(cand()?.idiomas ?? []).length > 0; else noLangs">
+          <span class="chip" *ngFor="let i of (cand()?.idiomas ?? [])">{{ i }}</span>
+        </div>
+        <ng-template #noLangs>
+          <p class="muted small">Sem idiomas informados.</p>
+        </ng-template>
+      </article>
+
+      <!-- Habilidades técnicas -->
+      <article class="card" *ngIf="(cand()?.habilidades?.length || cand()?.habilidadesTecnicas?.length)">
+        <header>Habilidades técnicas</header>
+        <div class="chips">
+
+          <!-- Caso venha cand().habilidades: string[] -->
+          <ng-container *ngIf="cand()?.habilidades?.length">
+            <span class="chip" *ngFor="let h of cand()?.habilidades">{{ h }}</span>
+          </ng-container>
+
+          <!-- Caso venha cand().habilidadesTecnicas: { nome, categoria?, nivel? }[] -->
+          <ng-container *ngIf="!cand()?.habilidades?.length && cand()?.habilidadesTecnicas?.length">
+            <span class="chip" *ngFor="let h of cand()?.habilidadesTecnicas">
+              {{ h.nome }}
+              <ng-container *ngIf="h.categoria"> · {{ h.categoria }}</ng-container>
+              <ng-container *ngIf="h.nivel"> · {{ h.nivel }}</ng-container>
+            </span>
+          </ng-container>
+
+        </div>
+      </article>
+
+      <!-- Soft skills -->
+      <article class="card" *ngIf="cand()?.habilidadesComportamentais?.length">
+        <header>Soft skills</header>
+        <div class="chips">
+          <span class="chip" *ngFor="let s of cand()?.habilidadesComportamentais">
+            {{ s.nome }}
+          </span>
+        </div>
+      </article>
+
+      <!-- Experiências -->
+      <article class="card" *ngIf="(cand()?.experiencias ?? []).length > 0">
+        <header>Experiências</header>
+        <div class="list-group">
+          <div class="list-group-item" *ngFor="let e of (cand()?.experiencias ?? [])">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+              <div class="fw-semibold">{{ e.empresa }}</div>
+              <div class="text-muted small" *ngIf="e.dataInicio || e.dataFim">
+                {{ e.dataInicio || '—' }} — {{ e.dataFim || 'Atual' }}
+              </div>
+            </div>
+
+            <div class="mb-1">
+              {{ e.cargo }}
+              <ng-container *ngIf="e.tipo"> · {{ e.tipo }}</ng-container>
+            </div>
+
+            <!-- Chips de tecnologias da experiência -->
+            <div class="chips" *ngIf="(e.tecnologias ?? []).length > 0">
+              <span class="chip" *ngFor="let t of (e.tecnologias ?? [])">{{ t }}</span>
+            </div>
+
+            <!-- (Opcional) Lista de realizações, se existir no response -->
+            <ul class="mt-2 mb-0 small" *ngIf="(e.realizacoes ?? []).length > 0">
+              <li *ngFor="let r of (e.realizacoes ?? [])">{{ r }}</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- >>> NOVO: Projetos -->
+      <article class="card" *ngIf="(cand()?.projetos ?? []).length > 0">
+        <header>Projetos</header>
+        <div class="list-group">
+          <div class="list-group-item" *ngFor="let p of (cand()?.projetos ?? [])">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+              <div class="fw-semibold">{{ p.nome }}</div>
+              <div class="text-muted small" *ngIf="p.dataInicio || p.dataFim">
+                {{ p.dataInicio || '—' }} — {{ p.dataFim || 'Atual' }}
+              </div>
+            </div>
+
+            <div class="small text-muted mb-1" *ngIf="p.descricao">{{ p.descricao }}</div>
+
+            <div class="mb-1" *ngIf="p.url">
+              <a [href]="p.url" target="_blank" rel="noopener">Abrir projeto</a>
+            </div>
+
+            <div class="chips" *ngIf="(p.tecnologias ?? []).length > 0">
+              <span class="chip" *ngFor="let t of (p.tecnologias ?? [])">{{ t }}</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tecnologias (opcional) -->
+      <article class="card" *ngIf="(cand()?.tecnologias ?? []).length > 0">
+        <header>Tecnologias</header>
+        <div class="chips">
+          <span class="chip" *ngFor="let t of (cand()?.tecnologias ?? [])">{{ t }}</span>
+        </div>
+      </article>
+
+      <!-- DADOS PESSOAIS -->
+      <article class="card" *ngIf="hasDadosPessoais()">
+        <header>Dados pessoais</header>
+
+        <div class="row" *ngIf="cand()?.dataNascimento">
+          <span class="label">Data de nascimento</span>
+          <span class="value">{{ cand()?.dataNascimento | date:'dd/MM/yyyy' }}</span>
+        </div>
+
+        <div class="row" *ngIf="cand()?.nacionalidade">
+          <span class="label">Nacionalidade</span>
+          <span class="value">{{ cand()?.nacionalidade | titlecase }}</span>
+        </div>
+
+        <div class="row" *ngIf="cand()?.estadoCivil">
+          <span class="label">Estado civil</span>
+          <span class="value">{{ cand()?.estadoCivil | titlecase }}</span>
+        </div>
+      </article>
+
+      <!-- DISPONIBILIDADE -->
+      <article class="card" *ngIf="hasDisponibilidade()">
+        <header>Disponibilidade</header>
+
+        <div class="row" *ngIf="cand()?.aceitaViagens !== null && cand()?.aceitaViagens !== undefined">
+          <span class="label">Aceita viagens</span>
+          <span class="value">{{ formatSimNao(cand()?.aceitaViagens) }}</span>
+        </div>
+
+        <div class="row" *ngIf="cand()?.aceitaMudanca !== null && cand()?.aceitaMudanca !== undefined">
+          <span class="label">Aceita mudança</span>
+          <span class="value">{{ formatSimNao(cand()?.aceitaMudanca) }}</span>
+        </div>
+
+        <div class="row" *ngIf="cand()?.horarios">
+          <span class="label">Horários</span>
+          <span class="value">{{ cand()?.horarios }}</span>
+        </div>
+
+        <div class="row" *ngIf="cand()?.pretensaoSalarial">
+          <span class="label">Pretensão salarial</span>
+          <span class="value">{{ cand()?.pretensaoSalarial }}</span>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Ações inferiores (acessíveis no mobile) -->
+    <footer class="detail-footer">
+      <a class="btn" routerLink="/app/talents" aria-label="Voltar para Talentos">← Voltar</a>
+      <!-- Futuras ações:
+      <button class="btn" type="button">Editar</button>
+      <button class="btn danger" type="button">Excluir</button>
+      -->
+    </footer>
+
+  </ng-container>
+</section>

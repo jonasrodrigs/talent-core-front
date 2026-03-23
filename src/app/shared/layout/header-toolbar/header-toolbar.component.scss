@@ -1,0 +1,144 @@
+/* src/app/shared/layout/header-toolbar/header-toolbar.component.scss */
+/* Header limpo, com barra de pesquisa central. */
+
+/* --------- Container --------- */
+.header-toolbar {
+  height: 56px;
+  padding: 0 12px;
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* left | search | right */
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+/* --------- Left (menu + navegação) --------- */
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-btn {
+  height: 32px;
+  min-width: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  a {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid transparent;
+  }
+  a:hover { background: #f4f6fb; }
+
+  .active {
+    color: #1f4ad1;
+    border-color: #dbe3ff;
+    background: #eef3ff;
+    font-weight: 600;
+  }
+}
+
+/* --------- Searchbar (centro) --------- */
+.searchbar {
+  display: flex;
+  justify-content: center;
+}
+
+.searchbar-box {
+  display: grid;
+  grid-template-columns: 1fr auto; /* input | botão lupa */
+  align-items: center;
+  max-width: 720px;        /* largura máxima da barra */
+  width: 100%;
+  gap: 6px;
+}
+
+.searchbar-box input {
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #dfe3e8;
+  border-radius: 999px;     /* formato pílula */
+  background: #fff;
+  color: #333;
+  outline: none;
+}
+
+.searchbar-box input::placeholder {
+  color: #9aa5b1;
+}
+
+.searchbar .icon-btn {
+  height: 34px;
+  min-width: 42px;
+  border-radius: 999px;
+  border: 1px solid #dfe3e8;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+}
+.searchbar .icon-btn:hover {
+  background: #f4f6fb;
+}
+
+/* --------- Right (usuário + sair) --------- */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .user {
+    color: #444;
+    strong { font-weight: 600; }
+  }
+  .muted { color: #888; }
+}
+
+.logout-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+}
+.logout-btn:hover { background: #f7f7f7; }
+
+/* --------- Responsivo --------- */
+@media (max-width: 900px) {
+  .searchbar-box { max-width: 520px; }
+}
+
+@media (max-width: 720px) {
+  .header-toolbar {
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+  }
+  .nav a { padding: 6px 8px; }
+  .right .user { display: none; } /* esconde saudação em telas estreitas */
+}
+
+@media (max-width: 520px) {
+  .searchbar-box { max-width: none; }
+  .nav { display: none; } /* simplifica header no mobile; opcional */
+}

@@ -1,0 +1,99 @@
+<!-- src/app/features/talents/talent-list/talent-list.component.html -->
+<section class="talents">
+
+  <!-- Cabeçalho da página -->
+  <header class="list-header">
+    <h1 class="h3 mb-3">Talentos</h1>
+  </header>
+
+  <!-- Estados -->
+  <div class="state" *ngIf="loading">
+    <div class="spinner" aria-hidden="true"></div>
+    <span>Carregando...</span>
+  </div>
+
+  <div class="state error" *ngIf="!loading && error">
+    <strong>Falha ao carregar:</strong> {{ error }}
+  </div>
+
+  <!-- Lista -->
+  <ng-container *ngIf="!loading && !error">
+    <div
+      class="table-wrap"
+      *ngIf="(candidatos?.length ?? 0) > 0; else emptyState"
+      role="region"
+      aria-label="Lista de talentos"
+      tabindex="0"
+    >
+      <table class="table table-striped table-hover align-middle mb-0 list">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Cidade/UF</th>
+            <th scope="col">Ocupação</th>
+            <th scope="col">Idiomas</th>
+            <th scope="col" class="min">Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let c of candidatos; trackBy: trackById">
+            <td class="col-nome">
+              {{ c.nomeCompleto }}
+            </td>
+
+            <td class="col-email">
+              <span class="email text-truncate d-inline-block" [title]="c.email || '—'">
+                {{ c.email || '—' }}
+              </span>
+            </td>
+
+            <td class="col-cidade">
+              {{ (c.cidade || '—') + (c.estado ? '/' + c.estado : '') }}
+            </td>
+
+            <td class="col-ocupacao">
+              {{ c.ocupacao || '—' }}
+            </td>
+
+            <td class="col-idiomas">
+              <ng-container *ngIf="(c.idiomas ?? []).length > 0; else semIdiomas">
+                <span
+                  class="badge rounded-pill text-bg-primary-subtle border border-primary-subtle fw-semibold me-1"
+                  *ngFor="let i of (c.idiomas ?? []) | slice:0:3"
+                >
+                  {{ i }}
+                </span>
+                <span
+                  class="text-secondary small"
+                  *ngIf="(c.idiomas ?? []).length > 3"
+                >
+                  +{{ (c.idiomas ?? []).length - 3 }}
+                </span>
+              </ng-container>
+              <ng-template #semIdiomas>—</ng-template>
+            </td>
+
+            <td class="min">
+              <a
+                class="link-primary fw-semibold text-decoration-none"
+                [routerLink]="['/app/talents', c.id]"
+                title="Ver detalhes do talento"
+              >
+                Detalhes
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="state empty">
+        <p class="mb-0">Nenhum candidato encontrado.</p>
+      </div>
+    </ng-template>
+  </ng-container>
+
+</section>

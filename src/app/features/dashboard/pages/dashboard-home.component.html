@@ -1,0 +1,118 @@
+<!-- src/app/features/dashboard/pages/dashboard-home.component.html -->
+<section class="dashboard">
+
+  <!-- Cabeçalho + ação -->
+  <header class="dash-header">
+    <div class="titles">
+      <h1>Dashboard</h1>
+      <p class="subtitle">Visão geral do banco de talentos</p>
+    </div>
+
+    <nav class="actions">
+      <a class="btn btn-primary" routerLink="/app/talents">Ver talentos</a>
+    </nav>
+  </header>
+
+  <!-- Estados globais -->
+  <div class="state" *ngIf="loading()">
+    <div class="spinner" aria-hidden="true"></div>
+    <span>Carregando...</span>
+  </div>
+
+  <div class="state error" *ngIf="!loading() && error()">
+    <strong>Falha ao carregar:</strong> {{ error() }}
+  </div>
+
+  <!-- Conteúdo -->
+  <ng-container *ngIf="!loading() && !error()">
+    <!-- Cards de resumo -->
+    <section class="cards">
+      <article class="card">
+        <header>Total de candidatos</header>
+        <div class="value">{{ total() }}</div>
+      </article>
+
+      <!-- Substituto universal: Top Ocupações -->
+      <article class="card">
+        <header>Top Ocupações</header>
+        <ul class="pill-list">
+          <li *ngFor="let o of topOcupacoes()">
+            <span class="pill">{{ o[0] }}</span>
+            <small class="muted">×{{ o[1] }}</small>
+          </li>
+        </ul>
+        <p class="muted small" *ngIf="topOcupacoes().length === 0">Sem dados suficientes.</p>
+      </article>
+
+      <article class="card">
+        <header>Top Idiomas</header>
+        <ul class="pill-list">
+          <li *ngFor="let i of topIdiomas()">
+            <span class="pill">{{ i[0] }}</span>
+            <small class="muted">×{{ i[1] }}</small>
+          </li>
+        </ul>
+        <p class="muted small" *ngIf="topIdiomas().length === 0">Sem dados suficientes.</p>
+      </article>
+    </section>
+
+    <!-- Recentes (tabela) -->
+    <!-- IMPORTANTE: para a tabela ficar do MESMO TAMANHO da lista de Talentos,
+         este contêiner .dash-table-box será estilizado no SCSS com as MESMAS
+         regras de largura (max-width: 980px; margin: 0 auto; etc.). -->
+    <section class="recent">
+      <div class="dash-table-box">
+        <header class="recent-header">
+          <h2>Recentes</h2>
+          <a routerLink="/app/talents" class="link">Ver todos</a>
+        </header>
+
+        <div
+          class="table-wrap"
+          *ngIf="recentes().length > 0; else emptyState"
+          role="region"
+          aria-label="Candidatos recentes"
+          tabindex="0"
+        >
+          <table class="list">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Cidade/UF</th>
+                <th>Ocupação</th>
+                <th class="hide-sm">Idiomas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of recentes()">
+                <td class="col-nome">{{ c.nomeCompleto }}</td>
+                <td class="col-email">
+                  <span class="email">{{ c.email || '—' }}</span>
+                </td>
+                <td class="col-cidade">
+                  {{ (c.cidade || '—') + (c.estado ? '/' + c.estado : '') }}
+                </td>
+                <td class="col-ocupacao">
+                  {{ c.ocupacao || '—' }}
+                </td>
+                <td class="hide-sm col-idiomas">
+                  <span class="chip" *ngFor="let i of (c.idiomas ?? []) | slice:0:3">{{ i }}</span>
+                  <span class="muted small" *ngIf="(c.idiomas ?? []).length > 3">
+                    +{{ (c.idiomas ?? []).length - 3 }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ng-template #emptyState>
+          <div class="state empty">
+            <p>Sem candidatos recentes.</p>
+          </div>
+        </ng-template>
+      </div>
+    </section>
+  </ng-container>
+</section>

@@ -1,0 +1,73 @@
+/* =========================================================
+   TalentCore • Bootstrap 5 custom build
+   ========================================================= */
+
+@use './_tc-theme' as tc;
+
+/* Variáveis do Bootstrap (antes do import) */
+$primary:   tc.$tc-primary !default;
+$secondary: tc.$tc-secondary !default;
+$success:   tc.$tc-success !default;
+$info:      tc.$tc-info !default;
+$warning:   tc.$tc-warning !default;
+$danger:    tc.$tc-danger !default;
+$light:     tc.$tc-light !default;
+$dark:      tc.$tc-dark !default;
+
+$theme-colors: tc.$tc-theme-colors !default;
+
+/* Tipografia */
+$body-font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !default;
+$headings-font-family: 'Poppins', 'Inter', sans-serif !default;
+
+/* Bordas & raios */
+$border-radius-sm: 8px !default;
+$border-radius:    10px !default;
+$border-radius-lg: 12px !default;
+
+/* Base de cores */
+$body-bg:     tc.$tc-bg !default;
+$body-color:  tc.$tc-fg !default;
+$border-color: tc.$tc-border !default;
+
+/* Botões */
+$btn-box-shadow:        var(--tc-shadow-sm) !default;
+$btn-focus-box-shadow:  0 0 0 .25rem rgba(37, 99, 235, .25) !default;
+$btn-border-width:      1px !default;
+$btn-padding-y:         .55rem !default;
+$btn-padding-x:         .9rem !default;
+$btn-font-weight:       700 !default;
+
+/* Cards */
+$card-border-color:  tc.$tc-border !default;
+$card-border-width:  1px !default;
+$card-box-shadow:    var(--tc-shadow) !default;
+$card-border-radius: 12px !default;
+
+/* Tables */
+$table-cell-padding-y: .6rem !default;
+$table-cell-padding-x: .75rem !default;
+$table-striped-bg:     #FAFBFF !default;
+$table-hover-bg:       #EDF2FF !default;
+$table-th-font-weight: 800 !default;
+
+/* Importa Bootstrap */
+@import "bootstrap/scss/bootstrap";
+
+/* Ajustes pós-bootstrap */
+.btn-primary {
+  background: var(--tc-primary);
+  border-color: var(--tc-primary-600);
+  color: #fff;
+  box-shadow: var(--tc-shadow);
+  &:hover { background: var(--tc-primary-600); box-shadow: var(--tc-shadow-lg); }
+  &:focus-visible { outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
+}
+
+.card { box-shadow: var(--tc-shadow); }
+
+.table thead th {
+  background: #F3F6FF;
+  border-bottom-color: #DEE6FB;
+  letter-spacing: .1px;
+}

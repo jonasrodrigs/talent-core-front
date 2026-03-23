@@ -1,0 +1,57 @@
+<!-- src/app/shared/layout/header-toolbar/header-toolbar.component.html -->
+<header class="header-toolbar">
+  <div class="left">
+    <button
+      type="button"
+      class="icon-btn"
+      (click)="toggleNav.emit()"
+      aria-label="Alternar navegação"
+      title="Menu"
+    >
+      ☰
+    </button>
+
+    <nav class="nav">
+      <a routerLink="/app/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/app/talents" routerLinkActive="active">Talentos</a>
+    </nav>
+  </div>
+
+  <!-- Barra de pesquisa: visível apenas em /app/talents/** -->
+  <form
+    *ngIf="showSearch"
+    class="searchbar"
+    (ngSubmit)="onSearch(searchInput.value)"
+    aria-label="Barra de pesquisa (Talentos)"
+  >
+    <div class="searchbar-box">
+      <input
+        #searchInput
+        type="text"
+        placeholder="pesquisa"
+        aria-label="Pesquisar por nome, e-mail, cidade, habilidade, idioma etc."
+      />
+      <button type="submit" class="icon-btn" aria-label="Buscar">🔍</button>
+    </div>
+  </form>
+
+  <div class="right">
+    <span class="user" *ngIf="isAuthenticated && userEmail; else anon">
+      Bem-vindo, <strong>{{ userEmail }}</strong>
+    </span>
+    <ng-template #anon>
+      <span class="user muted">Não autenticado</span>
+    </ng-template>
+
+    <button
+      *ngIf="isAuthenticated"
+      type="button"
+      class="logout-btn"
+      (click)="logout()"
+      aria-label="Sair da conta"
+      title="Sair"
+    >
+      Sair
+    </button>
+  </div>
+</header>

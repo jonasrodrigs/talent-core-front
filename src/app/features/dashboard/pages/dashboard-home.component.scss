@@ -1,0 +1,251 @@
+/* src/app/features/dashboard/pages/dashboard-home.component.scss */
+/* Objetivo: deixar o Dashboard consistente com a página Talentos:
+   - mesmas larguras máximas (conteúdo centralizado)
+   - cards simples e leves
+   - tabela "Recentes" com o MESMO visual/tamanho da lista de Talentos
+   - responsivo com scroll horizontal quando necessário
+*/
+
+/* --------- Layout geral --------- */
+.dashboard {
+  padding: 12px 12px 24px;
+  line-height: 1.35;
+  font-size: 13px; /* levemente menor: mais compacto */
+}
+
+/* Cabeçalho */
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 auto 12px;
+  max-width: 980px; /* MESMA largura do Talentos */
+
+  .titles {
+    h1 {
+      margin: 0 0 4px 0;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .subtitle {
+      margin: 0;
+      color: #555;
+      font-size: 0.95rem;
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+/* --------- Estados --------- */
+.state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0;
+  color: #333;
+
+  &.error { color: #a60000; }
+  &.empty {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #555;
+  }
+}
+
+/* Spinner simples */
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid #ccc;
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin .9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --------- Cards --------- */
+.cards {
+  max-width: 980px;   /* MESMA largura do Talentos */
+  margin: 0 auto 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  background: #fff;
+  padding: 12px;
+
+  header {
+    font-size: 0.95rem;
+    color: #444;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .value {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+}
+
+/* Pills (usadas em Top Ocupações/Idiomas) */
+.pill-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #e5e5e5;
+  font-size: 0.85rem;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  background: #fafafa;
+}
+
+/* --------- Seção Recentes --------- */
+.recent {
+  margin-top: 8px;
+}
+
+/* Caixa que controla a MESMA largura da tabela do Talentos */
+.dash-table-box {
+  max-width: 980px;   /* MESMA largura da página Talentos */
+  margin: 0 auto;
+}
+
+/* Header da seção */
+.recent-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 6px 0 10px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+}
+
+/* ---------- Tabela (idêntica ao estilo da lista Talentos) ---------- */
+.table-wrap {
+  overflow-x: auto;              /* Responsivo: rolagem horizontal sem esconder colunas */
+  -webkit-overflow-scrolling: touch;
+}
+
+table.list {
+  width: 100%;
+  min-width: 860px;              /* Mantém colunas visíveis; rola no mobile */
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: fixed;           /* Garante truncamento consistente */
+  font-size: 13px;
+  user-select: text;
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #f6f7fb;
+    color: #333;
+    font-weight: 600;
+    padding: 8px 10px;           /* cabeçalho enxuto */
+    text-align: left;
+    border-bottom: 1px solid #e8e8e8;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 8px 10px;           /* células enxutas */
+    border-bottom: 1px solid #f1f1f1;
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* Zebra + hover */
+  tbody tr:nth-child(odd)  { background: #fff; }
+  tbody tr:nth-child(even) { background: #fafafa; }
+  tbody tr:hover { background: #eef3ff; }
+
+  /* Colunas com mesmas regras da lista Talentos */
+  .col-nome   { min-width: 170px; }
+  .col-email  {
+    min-width: 240px;
+    max-width: 300px;
+    .email {
+      display: inline-block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: bottom;
+    }
+  }
+  .col-cidade   { min-width: 140px; max-width: 180px; }
+  .col-ocupacao { min-width: 170px; }
+  .col-idiomas  { min-width: 150px; }
+}
+
+/* Chips (reuso) */
+.chip {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+  background: #fafafa;
+  font-size: .78rem;
+  margin-right: 6px;
+  margin-bottom: 3px;
+}
+
+/* Links / botões */
+.btn {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  color: #333;
+  text-decoration: none;
+  font-size: .95rem;
+  cursor: pointer;
+}
+.btn-primary {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #fff;
+}
+.link { color: #2563eb; text-decoration: none; }
+.link:hover { text-decoration: underline; }
+.muted { color: #777; }
+.small { font-size: .85rem; }
+
+/* --------- Responsivo --------- */
+@media (max-width: 900px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .dashboard { padding: 10px; }
+  .cards { grid-template-columns: 1fr; }
+  table.list {
+    min-width: 820px;
+    .col-email  { max-width: 240px; }
+    .col-cidade { max-width: 160px; }
+  }
+}

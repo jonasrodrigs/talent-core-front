@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+/* =========================================
+   TalentCore • Estilos Globais Mínimos
+   - Corrigido o caminho do @use do tema
+   - Mantém apenas base global (sem regras de componentes)
+   ========================================= */
+
+/* 1) Carrega o tema (define :root com as CSS vars) */
+@use './styles/_tc-theme' as *;
+
+/* 2) Fonts (em dev). Em prod, prefira <link> no index.html */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
+
+/* 3) Reset mínimo */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+
+/* 4) Base tipográfica */
+body {
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--tc-bg);
+  color: var(--tc-fg);
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+/* 5) Acessibilidade (foco) */
+:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 2px;
+}

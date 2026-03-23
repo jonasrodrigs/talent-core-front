@@ -1,28 +1,48 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+/* To learn more about this file see: https://angular.io/config/tsconfig */
 {
   "compileOnSave": false,
+
   "compilerOptions": {
+    /* Saída do compilador */
     "outDir": "./dist/out-tsc",
+
+    /* Modo estrito e verificações úteis */
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+
+    /* Performance/compatibilidade */
     "skipLibCheck": true,
     "esModuleInterop": true,
+
+    /* Depuração & build */
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
+
+    /* Alvos modernos compatíveis com Angular 17+ */
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+
+    /* Bibliotecas padrão */
+    "lib": ["ES2022", "dom"],
+
+    /* ✅ Aliases para acabar com ../../../../ */
+    "baseUrl": "src",
+"paths": {
+  "@env/*": ["environments/*"],
+  "@core/*": ["app/core/*"],
+  "@features/*": ["app/features/*"],
+  "@shared/*": ["app/shared/*"]
+
+    }
   },
+
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

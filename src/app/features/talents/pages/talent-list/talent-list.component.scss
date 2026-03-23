@@ -1,0 +1,125 @@
+@use 'styles/_tc-theme' as tc;
+
+/* =========================================
+   Talent List • Refinos suaves com Bootstrap
+   - Tipografia discreta, cores do tema
+   - Badges (chips) com sutilidade enterprise
+   - Tabela com largura mínima, truncamento de e-mail
+   ========================================= */
+
+.talents {
+  padding: 12px 12px 20px;
+  color: var(--tc-fg);
+  background: transparent;
+}
+
+/* Cabeçalho */
+.list-header {
+  margin-bottom: 8px;
+
+  h1 {
+    margin: 0;
+    font-weight: 800; /* título firme */
+    letter-spacing: .1px;
+    color: var(--tc-fg);
+  }
+}
+
+/* Estados */
+.state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  color: var(--tc-fg-subtle);
+
+  &.error { color: var(--tc-danger); }
+
+  &.empty {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid #CBD5E1; border-top-color: #334155;
+  border-radius: 50%; animation: spin .9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Área rolável da tabela (responsiva) */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Tabela (com Bootstrap) + ajustes suaves de largura/cores */
+table.list {
+  min-width: 980px;                 /* evita “aperto” */
+  border: 1px solid var(--tc-border);
+  border-radius: 12px;              /* arredondamento externo */
+  overflow: hidden;                 /* mantém radius no tbody */
+  @include tc.elevation(sm);
+  font-size: 14px;
+
+  thead th {
+    position: sticky; top: 0; z-index: 1;
+    letter-spacing: .1px;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    vertical-align: middle;
+  }
+
+  /* zebra e hover já vêm do Bootstrap; afinamos o hover */
+  tbody tr:hover {
+    background: #F2F6FF;
+  }
+
+  /* colunas */
+  .col-nome { min-width: 200px; }
+  .col-email {
+    min-width: 260px; max-width: 360px;
+    .email {
+      max-width: 100%;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+  }
+  .col-cidade   { min-width: 160px; max-width: 220px; }
+  .col-ocupacao { min-width: 200px; }
+  .col-idiomas  { min-width: 180px; }
+  .min { width: 120px; }
+}
+
+/* Badges (chips de idiomas) – já usamos utilitários do Bootstrap;
+   aqui só polimos cores para o tema */
+.badge.text-bg-primary-subtle {
+  color: #1F4AD1;
+  background-color: #EEF3FF !important;
+  border-color: #D7E2FF !important;
+}
+
+/* Links de ação */
+a.link-primary {
+  &:hover { text-decoration: underline; }
+}
+
+/* Utilitários */
+.muted { color: var(--tc-fg-subtle); }
+.small { font-size: .88rem; }
+
+/* Responsivo */
+@media (max-width: 1024px) {
+  table.list { min-width: 900px; }
+}
+@media (max-width: 768px) {
+  table.list { min-width: 820px; }
+}
+/* Cole no final do talent-list.component.scss se quiser limitar a largura geral */
+.talents .table-wrap {
+  max-width: 100%;
+  margin: 0 auto;
+}

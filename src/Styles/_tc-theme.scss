@@ -1,0 +1,98 @@
+/* =========================================
+   TalentCore • Design Tokens (Cores & Helpers)
+   ========================================= */
+
+/* --------- Helpers Sass --------- */
+@use "sass:map";
+
+/* --------- Paleta Base (SCSS vars) --------- */
+$tc-primary:       #2563EB;
+$tc-primary-600:   #1E40AF;
+$tc-primary-50:    #EEF2FF;
+
+$tc-bg:            #F4F6FA;
+$tc-surface:       #FFFFFF;
+$tc-border:        #E3E8F2;
+
+$tc-fg:            #0F172A;
+$tc-fg-muted:      #334155;
+$tc-fg-subtle:     #667085;
+
+$tc-success:       #16A34A;
+$tc-warning:       #D97706;
+$tc-danger:        #DC2626;
+$tc-info:          #0EA5E9;
+$tc-secondary:     #475569;
+$tc-light:         #F8FAFC;
+$tc-dark:          #0F172A;
+
+/* --------- Mapa de cores do tema (útil p/ Bootstrap) --------- */
+$tc-theme-colors: (
+  "primary":   $tc-primary,
+  "secondary": $tc-secondary,
+  "success":   $tc-success,
+  "info":      $tc-info,
+  "warning":   $tc-warning,
+  "danger":    $tc-danger,
+  "light":     $tc-light,
+  "dark":      $tc-dark
+);
+
+/* --------- CSS Custom Properties (runtime) --------- */
+:root {
+  --tc-primary:      #{$tc-primary};
+  --tc-primary-600:  #{$tc-primary-600};
+  --tc-primary-50:   #{$tc-primary-50};
+
+  --tc-bg:           #{$tc-bg};
+  --tc-surface:      #{$tc-surface};
+  --tc-border:       #{$tc-border};
+
+  --tc-fg:           #{$tc-fg};
+  --tc-fg-muted:     #{$tc-fg-muted};
+  --tc-fg-subtle:    #{$tc-fg-subtle};
+
+  --tc-success:      #{$tc-success};
+  --tc-warning:      #{$tc-warning};
+  --tc-danger:       #{$tc-danger};
+  --tc-info:         #{$tc-info};
+
+  /* Sombras elegantes */
+  --tc-shadow-sm: 0 1px 2px rgba(16,24,40,.06);
+  --tc-shadow:    0 1px 2px rgba(16,24,40,.08), 0 4px 12px rgba(16,24,40,.06);
+  --tc-shadow-lg: 0 2px 8px rgba(16,24,40,.10), 0 12px 24px rgba(16,24,40,.08);
+
+  /* Raios */
+  --tc-radius-sm: 8px;
+  --tc-radius-md: 10px;
+  --tc-radius-lg: 12px;
+}
+
+/* --------- Funções/Mixins --------- */
+@function tc-color($name) { @return map.get($tc-theme-colors, $name); }
+
+/* Sombra por nível: sm | md | lg */
+@mixin elevation($level: md) {
+  @if $level == sm { box-shadow: var(--tc-shadow-sm); }
+  @else if $level == lg { box-shadow: var(--tc-shadow-lg); }
+  @else { box-shadow: var(--tc-shadow); }
+}
+
+/* Anel de foco acessível */
+@mixin focus-ring {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 2px;
+}
+
+/* Borda padrão */
+@mixin border { border: 1px solid var(--tc-border); }
+
+/* Botão primário sólido (para reuso em componentes) */
+@mixin btn-primary {
+  background: var(--tc-primary);
+  border: 1px solid var(--tc-primary-600);
+  color: #fff;
+  @include elevation();
+  &:hover { background: var(--tc-primary-600); @include elevation(lg); }
+  &:focus-visible { @include focus-ring; }
+}

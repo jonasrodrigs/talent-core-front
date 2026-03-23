@@ -1,0 +1,94 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+  background: #f3f2ef; /* vibe LinkedIn / enterprise */
+}
+
+.login-shell {
+  min-height: inherit;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: min(420px, 92vw);
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 24px 24px 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+
+.card-header { margin-bottom: 12px; }
+.card-header h1 { margin: 0 0 4px; font-size: 22px; }
+.subtitle { margin: 0; color: #666; font-size: 13px; }
+
+.form-field { display: grid; gap: 6px; margin: 12px 0; }
+label { font-size: 13px; color: #222; }
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d6d6d6;
+  background: #fff;
+  color: #111;
+}
+
+input:focus {
+  outline: 2px solid #0a66c233;
+  border-color: #0a66c2;
+}
+
+.password-wrap {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.icon-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 18px;
+  color: #444;
+}
+
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.check { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #444; }
+.muted { color: #666; font-size: 12px; text-decoration: none; }
+
+.primary {
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  background: #0a66c2;
+  font-weight: 600;
+}
+.primary[disabled] { opacity: .6; cursor: not-allowed; }
+
+.spinner {
+  display: inline-block;
+  width: 18px; height: 18px;
+  border: 2px solid #fff; border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error { color: #b00020; font-size: 12px; }
+.auth-error { margin-top: 10px; color: #b00020; }
+.card-footer { margin-top: 14px; display: flex; gap: 6px; font-size: 13px; }
